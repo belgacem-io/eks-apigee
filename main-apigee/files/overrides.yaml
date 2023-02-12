@@ -1,0 +1,62 @@
+gcp:
+  region: ${ANALYTICS_REGION}
+  projectID: ${GCP_PROJECT_ID}
+
+k8sCluster:
+  name: ${CLUSTER_NAME}
+  region: ${CLUSTER_LOCATION} # Must be the closest Google Cloud region to your cluster.
+org: ${ORG_NAME}
+
+instanceID: "${UNIQUE_INSTANCE_IDENTIFIER}"
+
+cassandra:
+  hostNetwork: false
+
+virtualhosts:
+  - name: ${ENVIRONMENT_GROUP_NAME}
+    selector:
+      app: apigee-ingressgateway
+      ingress_name: ${INGRESS_NAME}
+    sslCertPath: ${SSL_CERT_PATH}
+    sslKeyPath: ${SSL_KEY_PATH}
+
+ao:
+  args:
+    # This configuration is introduced in hybrid v1.8
+    disableIstioConfigInAPIServer: true
+
+# This configuration is introduced in hybrid v1.8
+ingressGateways:
+  - name: ${INGRESS_NAME} # maximum 17 characters. See Known issue 243167389.
+    replicaCountMin: 2
+    replicaCountMax: 10
+
+envs:
+  - name: ${ENVIRONMENT_NAME}
+    serviceAccountPaths:
+      synchronizer: ${SVC_ACCOUNT_PATH}
+      # For example: "./service-accounts/GCP_PROJECT_ID-apigee-non-prod.json"
+      udca: ${SVC_ACCOUNT_PATH}
+      runtime: ${SVC_ACCOUNT_PATH}
+
+mart:
+  serviceAccountPath: ${SVC_ACCOUNT_PATH}
+
+connectAgent:
+  serviceAccountPath: ${SVC_ACCOUNT_PATH}
+
+metrics:
+  serviceAccountPath: ${SVC_ACCOUNT_PATH}
+
+udca:
+  serviceAccountPath: ${SVC_ACCOUNT_PATH}
+
+watcher:
+  serviceAccountPath: ${SVC_ACCOUNT_PATH}
+
+logger:
+  enabled: false
+    # Set to false to disable logger for GKE installations.
+    # Set to true for all platforms other than GKE.
+  # See apigee-logger in Service accounts and roles used by hybrid components.
+  serviceAccountPath: ${SVC_ACCOUNT_PATH}

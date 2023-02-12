@@ -1,0 +1,7 @@
+.terraform.lock.hcl
+.terraform/
+.idea/*
+.build
+.terraform.tfstate.lock.info
+terraform.*
+.auth/*
